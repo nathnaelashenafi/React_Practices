@@ -54,7 +54,42 @@ export function Calculator() {
   }
 
   function handleOperator(value) {
-    setFirstNumber(Number(display));
+    if (firstNumber === null) {
+      setFirstNumber(Number(display));
+      setOperator(value);
+      setDisplay("0");
+      return;
+    }
+
+    const secondNumber = Number(display);
+    let result;
+
+    switch (operator) {
+      case "+":
+        result = firstNumber + secondNumber;
+        break;
+
+      case "−":
+        result = firstNumber - secondNumber;
+        break;
+
+      case "×":
+        result = firstNumber * secondNumber;
+        break;
+
+      case "÷":
+        if (secondNumber === 0) {
+          setDisplay("Error");
+          return;
+        }
+        result = firstNumber / secondNumber;
+        break;
+
+      default:
+        return;
+    }
+
+    setFirstNumber(result);
     setOperator(value);
     setDisplay("0");
   }
