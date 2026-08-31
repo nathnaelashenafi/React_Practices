@@ -30,8 +30,14 @@ export function Calculator() {
   const [display, setDisplay] = useState("0");
   const [firstNumber, setFirstNumber] = useState(null);
   const [operator, setOperator] = useState(null);
+  const [justCalculated, setJustCalculated] = useState(false);
 
   function handleNumberClick(value) {
+    if (justCalculated) {
+      setDisplay(value);
+      setJustCalculated(false);
+      return;
+    }
     if (display === "0") {
       setDisplay(value);
     } else {
@@ -54,6 +60,7 @@ export function Calculator() {
   }
 
   function handleOperator(value) {
+    setJustCalculated(false);
     if (firstNumber === null) {
       setFirstNumber(Number(display));
       setOperator(value);
@@ -122,7 +129,7 @@ export function Calculator() {
       default:
         return;
     }
-
+    setJustCalculated(true);
     setDisplay(String(result));
     setFirstNumber(null);
     setOperator(null);
