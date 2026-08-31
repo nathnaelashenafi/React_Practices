@@ -3,7 +3,28 @@ import { Button } from "./Button";
 import { Display } from "./Display";
 
 export function Calculator() {
-  const numberButtons = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0"];
+  const buttons = [
+    "AC",
+    "DEL",
+    "÷",
+    "×",
+    "7",
+    "8",
+    "9",
+    "−",
+    "4",
+    "5",
+    "6",
+    "+",
+    "1",
+    "2",
+    "3",
+    "=",
+    "0",
+    ".",
+    "+/-",
+    "%",
+  ];
   const operators = ["÷", "×", "−", "+"];
 
   const [display, setDisplay] = useState("0");
@@ -89,33 +110,47 @@ export function Calculator() {
       setDisplay("-" + display);
     }
   }
+
+  function handlePercent() {
+    if (display === "Error") {
+      return;
+    }
+
+    setDisplay(String(Number(display) / 100));
+  }
+
+  function handleButtonClick(button) {
+    if (button === "AC") {
+      handleClear();
+    } else if (button === "DEL") {
+      handleDel();
+    } else if (button === "=") {
+      handleEquals();
+    } else if (button === ".") {
+      handleDecimal();
+    } else if (button === "+/-") {
+      handleToggleSign();
+    } else if (button === "%") {
+      handlePercent();
+    } else if (operators.includes(button)) {
+      handleOperator(button);
+    } else {
+      handleNumberClick(button);
+    }
+  }
   return (
     <div className="flex items-center justify-center w-full min-h-screen bg-black">
       <div className="w-full max-w-sm p-4 bg-gray-900 rounded-2xl shadow-2xl">
         <Display value={display} />
 
         <div className="grid grid-cols-4 gap-2 mt-4">
-          <Button value="AC" onClick={handleClear} />
-          <Button value="DEL" onClick={handleDel} />
-
-          {operators.map((operato) => (
-            <Button
-              key={operato}
-              value={operato}
-              onClick={() => handleOperator(operato)}
-            />
-          ))}
-
-          {numberButtons.map((button) => (
+          {buttons.map((button) => (
             <Button
               key={button}
               value={button}
-              onClick={() => handleNumberClick(button)}
+              onClick={() => handleButtonClick(button)}
             />
           ))}
-
-          <Button value="=" onClick={handleEquals} />
-          <Button value="." onClick={handleDecimal} />
         </div>
       </div>
     </div>
